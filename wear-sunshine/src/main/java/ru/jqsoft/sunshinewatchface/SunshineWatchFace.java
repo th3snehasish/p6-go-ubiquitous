@@ -231,6 +231,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
             // Load resources that have alternate values for round watches.
             Resources resources = SunshineWatchFace.this.getResources();
+            boolean isRound = insets.isRound();
+            
             float timeTextSize = resources.getDimension(R.dimen.time_text_size);
             timeTextPaint.setTextSize(timeTextSize);
 
@@ -319,17 +321,18 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                 highTemperatureTextPaint.getTextBounds(highTemperature, 0, highTemperature.length(), temperatureBounds);
 
                 float lineYOffset = (dateYOffset + weatherYOffset) / 2 - (temperatureBounds.height() / 2);
-                canvas.drawLine(bounds.centerX() - 4 * SPACE_BETWEEN_TEMPERATURES, lineYOffset,
-                        bounds.centerX() + 4 * SPACE_BETWEEN_TEMPERATURES, lineYOffset, linePaint);
+                canvas.drawLine(bounds.centerX() - 20, lineYOffset,
+                        bounds.centerX() + 20, lineYOffset, linePaint);
 
                 float xOffsetHighTemperature;
                 if (isAmbientMode) {
-                    xOffsetHighTemperature = bounds.centerX() - ((highTemperatureTextWidth + lowTemperatureTextWidth + SPACE_BETWEEN_TEMPERATURES) / 2);
+                    xOffsetHighTemperature = bounds.centerX() - ((highTemperatureTextWidth + lowTemperatureTextWidth + 20) / 2);
                 } else {
                     xOffsetHighTemperature = bounds.centerX() - (highTemperatureTextWidth / 2);
 
-                    canvas.drawBitmap(conditionIcon, xOffsetHighTemperature - conditionIcon.getWidth() - 2 * SPACE_BETWEEN_TEMPERATURES,
-                            weatherYOffset - (temperatureBounds.height() / 2) - (conditionIcon.getHeight() / 2), null);
+                    float iconXOffset = bounds.centerX() - ((highTemperatureTextWidth / 2) + conditionIcon.getWidth() + 30);
+                    canvas.drawBitmap(conditionIcon,iconXOffset,
+                            weatherYOffset - conditionIcon.getHeight(), null);
                 }
 
                 float xOffsetLowTemperature = xOffsetHighTemperature + highTemperatureTextWidth + SPACE_BETWEEN_TEMPERATURES;
